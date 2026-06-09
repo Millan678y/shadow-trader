@@ -1,4 +1,4 @@
-name: Deploy to Vercel
+name: Deploy to Cloudflare Pages
 
 on:
   push:
@@ -8,6 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,14 +22,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install Vercel CLI
-        run: npm install -g vercel@latest
+      - name: Build
+        run: npm run build
 
-      - name: Pull Vercel environment
-        run: echo "${{ secrets.VERCEL_TOKEN }}" | vercel pull --yes --environment=production
-
-      - name: Build project
-        run: echo "${{ secrets.VERCEL_TOKEN }}" | vercel build --prod
-
-      - name: Deploy to Vercel
-        run: echo "${{ secrets.VERCEL_TOKEN }}" | vercel deploy --prebuilt --prod
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy .next --project-name=shadow-trader --git-source
