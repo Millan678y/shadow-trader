@@ -1,9 +1,8 @@
 import { supabase } from "./db";
 import { jwtVerify, SignJWT } from "jose";
 
-// NOTE: Set JWT_SECRET env var before deploying
-const JWT_SECRET=proces...CRET ||
-  "shadow-dev-secret-32-chars-here-abc123";
+const raw = process.env.JWT_SECRET || "shadow-dev-secret-32chars-min!";
+const key = Buffer.from(raw, "utf-8");
 
 function makeNonce() { return crypto.randomUUID(); }
 
@@ -24,12 +23,12 @@ async function createSession(userId) {
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime("7d")
     .setIssuedAt()
-    .sign(JWT_SECRET);
+    .sign(key);
 }
 
 async function verifySession(token) {
   try {
-    const { payload } = await jwtVerify(token, JWT_SECRET);
+    const { payload } = await jwtVerify(token, key);
     return { valid: true, userId: payload.userId };
   } catch { return { valid: false }; }
 }
