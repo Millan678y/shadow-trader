@@ -1,0 +1,7 @@
+name = "shadow-trader"
+compatibility_date = "2024-01-01"
+
+[[pages]]
+name = "shadow-trader"
+source_dir = ".next"
+destination_dir = "dist"
