@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
 
-
 const FACTORS = [
   { key: 'marketRegime', label: 'Market Regime', desc: 'Trend cycle & volatility analysis' },
   { key: 'trend', label: 'Trend', desc: 'Multi-timeframe EMA/SMA cross' },
@@ -27,6 +26,8 @@ export default function LandingContent() {
     // Generate scores client-side only to avoid hydration mismatch
     setFactorScores(FACTORS.map(() => Math.floor(Math.random() * 20) + 75))
   }, [])
+
+  return (
     <div style={{ background: '#08080d', color: '#e2e8f0', minHeight: '100vh' }}>
       {/* Nav */}
       <nav style={{
@@ -43,9 +44,9 @@ export default function LandingContent() {
             <a key={item} href={`/${item.toLowerCase()}`} style={{ color: '#94a3b8', textDecoration: 'none', fontSize: 14, transition: 'color 0.2s' }}>{item}</a>
           ))}
         </div>
-          <a href="/dashboard" style={{ display: 'inline-block', background: 'linear-gradient(135deg,#00c853,#00e676)', border: 'none', borderRadius: 8, padding: '8px 20px', fontSize: 13, fontWeight: 600, color: '#000', textDecoration: 'none', cursor: 'pointer' }}>
-            Launch App
-          </a>
+        <a href="/dashboard" style={{ display: 'inline-block', background: 'linear-gradient(135deg,#00c853,#00e676)', border: 'none', borderRadius: 8, padding: '8px 20px', fontSize: 13, fontWeight: 600, color: '#000', textDecoration: 'none', cursor: 'pointer' }}>
+          Launch App
+        </a>
       </nav>
 
       {/* Hero */}
@@ -114,7 +115,7 @@ export default function LandingContent() {
           </div>
 
           <div style={{ display: 'flex', gap: 12 }}>
-            <a href="/dashboard/signals" style={{ flex: 1, display: 'block', background: 'linear-gradient(135deg,#00c853,#00e676)', border: 'none', borderRadius: 8, padding: 12, fontSize: 14, fontWeight: 700, color: '#000', textDecoration: 'none', textAlign: 'center' }}>Execute Signal</a>
+            <a href="/dashboard/signals" style={{ flex: 1, display: 'block', background: 'linear-gradient(135deg,#00c853,#00e676)', borderRadius: 8, padding: 12, fontSize: 14, fontWeight: 700, color: '#000', textDecoration: 'none', textAlign: 'center' }}>Execute Signal</a>
             <a href="/dashboard/signals" style={{ flex: 1, display: 'block', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: 12, fontSize: 14, fontWeight: 600, color: '#e2e8f0', textDecoration: 'none', textAlign: 'center' }}>View Full Analysis</a>
           </div>
         </div>
@@ -142,7 +143,7 @@ export default function LandingContent() {
       <section style={{ padding: '100px 40px', textAlign: 'center' }}>
         <h2 style={{ fontSize: 'clamp(28px,4vw,48px)', fontWeight: 800, letterSpacing: '-1px', marginBottom: 20 }}>Ready to Trade with an Edge?</h2>
         <p style={{ color: '#64748b', fontSize: 16, marginBottom: 40, maxWidth: 500, margin: '0 auto 40px' }}>Join traders who stopped guessing and started executing with institutional discipline.</p>
-        <a href="/dashboard" style={{ display: 'inline-block', background: 'linear-gradient(135deg,#00c853,#00e676)', border: 'none', borderRadius: 12, padding: '16px 48px', fontSize: 18, fontWeight: 700, color: '#000', textDecoration: 'none' }}>Get Started Free</a>
+        <a href="/dashboard" style={{ display: 'inline-block', background: 'linear-gradient(135deg,#00c853,#00e676)', border: 'none', borderRadius: 12, padding: '16px 48px', fontSize: 18, fontWeight: 700, color: '#000', textDecoration: 'none', cursor: 'pointer' }}>Get Started Free</a>
       </section>
 
       {/* Footer */}
