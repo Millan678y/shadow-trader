@@ -1,5 +1,6 @@
 'use client'
-// Landing page — deployed via dynamic import to avoid page.tsx JSX parser issue
+import { useState, useEffect } from 'react'
+
 
 const FACTORS = [
   { key: 'marketRegime', label: 'Market Regime', desc: 'Trend cycle & volatility analysis' },
@@ -20,7 +21,12 @@ const PIPELINE = [
 ]
 
 export default function LandingContent() {
-  return (
+  const [factorScores, setFactorScores] = useState<number[]>([])
+
+  useEffect(() => {
+    // Generate scores client-side only to avoid hydration mismatch
+    setFactorScores(FACTORS.map(() => Math.floor(Math.random() * 20) + 75))
+  }, [])
     <div style={{ background: '#08080d', color: '#e2e8f0', minHeight: '100vh' }}>
       {/* Nav */}
       <nav style={{
@@ -37,9 +43,9 @@ export default function LandingContent() {
             <a key={item} href={`/${item.toLowerCase()}`} style={{ color: '#94a3b8', textDecoration: 'none', fontSize: 14, transition: 'color 0.2s' }}>{item}</a>
           ))}
         </div>
-        <button style={{ background: 'linear-gradient(135deg,#00c853,#00e676)', border: 'none', borderRadius: 8, padding: '8px 20px', fontSize: 13, fontWeight: 600, color: '#000', cursor: 'pointer' }}>
-          Connect Wallet
-        </button>
+          <a href="/dashboard" style={{ display: 'inline-block', background: 'linear-gradient(135deg,#00c853,#00e676)', border: 'none', borderRadius: 8, padding: '8px 20px', fontSize: 13, fontWeight: 600, color: '#000', textDecoration: 'none', cursor: 'pointer' }}>
+            Launch App
+          </a>
       </nav>
 
       {/* Hero */}
@@ -54,12 +60,12 @@ export default function LandingContent() {
           Institutional-grade signals powered by a 7-factor engine. Multi-agent pipeline with Risk Agent veto authority. Built for perpetual futures traders who demand discipline.
         </p>
         <div style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
-          <button style={{ background: 'linear-gradient(135deg,#00c853,#00e676)', border: 'none', borderRadius: 12, padding: '14px 36px', fontSize: 16, fontWeight: 700, color: '#000', cursor: 'pointer' }}>
+          <a href="/dashboard" style={{ display: 'inline-block', background: 'linear-gradient(135deg,#00c853,#00e676)', border: 'none', borderRadius: 12, padding: '14px 36px', fontSize: 16, fontWeight: 700, color: '#000', textDecoration: 'none', cursor: 'pointer' }}>
             Start Free Trial
-          </button>
-          <button style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, padding: '14px 36px', fontSize: 16, fontWeight: 600, color: '#e2e8f0', cursor: 'pointer' }}>
+          </a>
+          <a href="/dashboard/terminal" style={{ display: 'inline-block', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, padding: '14px 36px', fontSize: 16, fontWeight: 600, color: '#e2e8f0', textDecoration: 'none', cursor: 'pointer' }}>
             View Live Terminal
-          </button>
+          </a>
         </div>
       </section>
 
@@ -90,14 +96,14 @@ export default function LandingContent() {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 24 }}>
-            {FACTORS.map(f => (
+            {FACTORS.map((f, idx) => (
               <div key={f.key} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 8, padding: 12 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                   <span style={{ fontSize: 12, fontWeight: 600 }}>{f.label}</span>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: '#00e676' }}>{Math.floor(Math.random() * 20) + 75}</span>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: '#00e676' }}>{factorScores[idx] ?? '...'}</span>
                 </div>
                 <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 4, height: 4 }}>
-                  <div style={{ width: `${Math.floor(Math.random() * 20) + 75}%`, height: '100%', borderRadius: 4, background: 'linear-gradient(90deg,#00c853,#00e676)' }} />
+                  <div style={{ width: `${factorScores[idx] ?? 80}%`, height: '100%', borderRadius: 4, background: 'linear-gradient(90deg,#00c853,#00e676)', transition: 'width 0.5s ease' }} />
                 </div>
               </div>
             ))}
@@ -108,8 +114,8 @@ export default function LandingContent() {
           </div>
 
           <div style={{ display: 'flex', gap: 12 }}>
-            <button style={{ flex: 1, background: 'linear-gradient(135deg,#00c853,#00e676)', border: 'none', borderRadius: 8, padding: 12, fontSize: 14, fontWeight: 700, color: '#000', cursor: 'pointer' }}>Execute Signal</button>
-            <button style={{ flex: 1, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: 12, fontSize: 14, fontWeight: 600, color: '#e2e8f0', cursor: 'pointer' }}>View Full Analysis</button>
+            <a href="/dashboard/signals" style={{ flex: 1, display: 'block', background: 'linear-gradient(135deg,#00c853,#00e676)', border: 'none', borderRadius: 8, padding: 12, fontSize: 14, fontWeight: 700, color: '#000', textDecoration: 'none', textAlign: 'center' }}>Execute Signal</a>
+            <a href="/dashboard/signals" style={{ flex: 1, display: 'block', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: 12, fontSize: 14, fontWeight: 600, color: '#e2e8f0', textDecoration: 'none', textAlign: 'center' }}>View Full Analysis</a>
           </div>
         </div>
       </section>
@@ -136,14 +142,14 @@ export default function LandingContent() {
       <section style={{ padding: '100px 40px', textAlign: 'center' }}>
         <h2 style={{ fontSize: 'clamp(28px,4vw,48px)', fontWeight: 800, letterSpacing: '-1px', marginBottom: 20 }}>Ready to Trade with an Edge?</h2>
         <p style={{ color: '#64748b', fontSize: 16, marginBottom: 40, maxWidth: 500, margin: '0 auto 40px' }}>Join traders who stopped guessing and started executing with institutional discipline.</p>
-        <button style={{ background: 'linear-gradient(135deg,#00c853,#00e676)', border: 'none', borderRadius: 12, padding: '16px 48px', fontSize: 18, fontWeight: 700, color: '#000', cursor: 'pointer' }}>Get Started Free</button>
+        <a href="/dashboard" style={{ display: 'inline-block', background: 'linear-gradient(135deg,#00c853,#00e676)', border: 'none', borderRadius: 12, padding: '16px 48px', fontSize: 18, fontWeight: 700, color: '#000', textDecoration: 'none' }}>Get Started Free</a>
       </section>
 
       {/* Footer */}
       <footer style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '32px 40px', textAlign: 'center', fontSize: 13, color: '#475569' }}>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginBottom: 16 }}>
           {['Terms', 'Privacy', 'Risk Disclosure'].map(item => (
-            <a key={item} href="#" style={{ color: '#475569', textDecoration: 'none' }}>{item}</a>
+            <a key={item} href={`/${item.toLowerCase().replace(' ', '-')}`} style={{ color: '#475569', textDecoration: 'none' }}>{item}</a>
           ))}
         </div>
         <p>Shadow Trader · For educational purposes only · Not financial advice</p>

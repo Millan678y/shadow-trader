@@ -67,24 +67,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return () => clearInterval(id)
   }, [])
 
-  // Live BTC price + equity from local dashboard
+  // Live BTC price from Binance public API (no key needed)
   useEffect(() => {
     let mounted = true
-    const poll = async () => {
+    const fetchBtc = async () => {
       try {
-        const r = await fetch('http://127.0.0.1:5000/api/state')
+        const r = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT')
         if (!r.ok) return
         const d = await r.json()
         if (!mounted) return
-        if (d.btc_price) setBtcPrice('$' + d.btc_price.toLocaleString('en', { maximumFractionDigits: 0 }))
-        if (d.btc_change_24h !== undefined) setBtcChange(d.btc_change_24h)
-        if (d.equity?.equity) setEquity('$' + d.equity.equity.toLocaleString('en', { maximumFractionDigits: 0 }))
+        if (d.lastPrice) setBtcPrice('$' + Number(d.lastPrice).toLocaleString('en', { maximumFractionDigits: 0 }))
+        if (d.priceChangePercent) setBtcChange(Number(d.priceChangePercent))
       } catch {}
     }
-    poll()
-    const id = setInterval(poll, 5000)
+    fetchBtc()
+    const id = setInterval(fetchBtc, 15000)
     return () => { mounted = false; clearInterval(id) }
   }, [])
+
+  // Equity state (demo)
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-primary)' }}>
